@@ -1,6 +1,7 @@
-import { SchemaEncoder } from "@ethereum-attestation-service/eas-sdk";
-import { hexlify } from "ethers";
+import { EAS, SchemaEncoder } from "@ethereum-attestation-service/eas-sdk";
+import { ethers, hexlify } from "ethers";
 import crypto from "crypto";
+import { EAS_CONTRACT_ADDRESS } from "./attestation-constants";
 
 const schemaEncoder = new SchemaEncoder(
   "bytes32 hypercertId, string title, string description, address[] contributors, uint64 workStart, uint64 workEnd"
@@ -22,3 +23,11 @@ export const encodeData = (data: any) => {
   ]);
   return encodedData;
 };
+
+export const eas = new EAS(EAS_CONTRACT_ADDRESS);
+const provider = new ethers.AlchemyProvider(
+  process.env.NEXT_PUBLIC_NETWORK!,
+  process.env.ALCHEMY_API_KEY!
+);
+const signer = new ethers.Wallet(process.env.PRIVATE_KEY!, provider);
+eas.connect(signer);
