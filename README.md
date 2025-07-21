@@ -7,9 +7,6 @@ _Schema UID:_ 0x3a65facf06635b21432225452ac5a5c00bc300c91ff6f940dc7244836f892616
 - `NEXT_PUBLIC_NETWORK` should be sepolia for the schema_uid above since it is deployed on sepolia
 - `PRIVATE_KEY` the wallet that is used to create the attestation.
 
-3. Next run `pnpm dev` and it should start the server.
-4. Run `pnpm build` to build for production
-
 _API Route is located at `/app/api/create-attestation`_
 
 # API DOCS:
@@ -166,15 +163,21 @@ PRIVATE_KEY="YOUR_WALLET_PRIVATE_KEY"
 ALCHEMY_API_KEY="ALCHEMY_KEY"
 ```
 
+3. Next run `pnpm dev` and it should start the server.
+4. Run `pnpm build` to build for production
+
 ## Notes:
 
-used private key from `process.env.PK` dont know how these are handled in production.
+Used private key from `process.env.PK` dont know how these are handled in production or if this was the right way to go.
+
+For the frontend form and displaying the result I just used ai to generate the form and hit the _API_. For all others I wrote it myself.
 
 ## TODOS
 
 - [x] add schema validation
 - [x] multi attestations
 - [x] error handling
-- [ ] change workstart and workend to proper dates
+- [ ] change workstart and workend to proper dates ( maybe this would be easier to send rather than unix?)
 - [x] add hypercert id to payload
 - [x] add some sample requests using curl and sample responses
+- [x] add a frontend for simple testing and demo
