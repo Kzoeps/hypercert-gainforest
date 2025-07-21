@@ -12,25 +12,34 @@ _API Route is located at `/app/api/create-attestation`_
 # API DOCS:
 
 _URL Path_: `/api/create-attestation`
+
 _Method_: `POST`
+
 _Description_: Create attestation handles the creation of both single and multiple attestation. The attestation is created by the `PRIVATE_KEY` provided in the env.
+
 **_Request Parameters_**:
+
 _Content Type_: `application/json`
+
 _Payload_:
+
 The payload must be an array of attestations.
+
 Each attestation can consists of these values:
-| Field | Type | Required | Description |
+
+| Field          | Type       | Required | Description                                                |
 | -------------- | ---------- | -------- | ---------------------------------------------------------- |
-| `hypercertId` | `string` | ✅ | Valid 32 bytes id with 0x prefix |
-| `title` | `string` | ✅ | Minimum 5 characters |
-| `description` | `string` | ✅ | Minimum 10 characters |
-| `contributors` | `string[]` | ✅ | Array of valid Ethereum addresses (at least one required) |
-| `workStart` | `integer` | ✅ | Positive UNIX timestamp (in seconds) |
-| `workEnd` | `integer` | ✅ | Positive UNIX timestamp (must be greater than `workStart`) |
-| `recipient` | `string` | ✅ | A valid Ethereum address |
+| `hypercertId`  | `string`   | ✅       | Valid 32 bytes id with 0x prefix                           |
+| `title`        | `string`   | ✅       | Minimum 5 characters                                       |
+| `description`  | `string`   | ✅       | Minimum 10 characters                                      |
+| `contributors` | `string[]` | ✅       | Array of valid Ethereum addresses (at least one required)  |
+| `workStart`    | `integer`  | ✅       | Positive UNIX timestamp (in seconds)                       |
+| `workEnd`      | `integer`  | ✅       | Positive UNIX timestamp (must be greater than `workStart`) |
+| `recipient`    | `string`   | ✅       | A valid Ethereum address                                   |
 
 **Sample Payload**:
-Note both singe and multiple attestations have the same payload. You just add to the array if you want multiple attestations at once
+
+Note both single and multiple attestations have the same payload. You just add to the array if you want multiple attestations at once
 
 Single attestation
 
