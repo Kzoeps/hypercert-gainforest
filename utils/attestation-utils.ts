@@ -3,10 +3,13 @@ import { ZodError } from "zod";
 import { ethers, hexlify } from "ethers";
 import crypto from "crypto";
 import { EAS_CONTRACT_ADDRESS } from "./attestation-constants";
+import { NextResponse } from "next/server";
+import { de } from "zod/locales";
 
 const schemaEncoder = new SchemaEncoder(
   "bytes32 hypercertId, string title, string description, address[] contributors, uint64 workStart, uint64 workEnd"
 );
+// TODO: Add type for data parameter
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const encodeData = (data: any) => {
   const { title, description, contributors, workStart, workEnd } = data;
@@ -38,4 +41,47 @@ export function formatZodError(error: ZodError) {
     path: err.path.join("."),
     message: err.message,
   }));
+}
+
+export function handleError(error: unknown) {
+  if (error instanceof ZodError) {
+    return NextResponse.json(
+      {
+        error: "Validation failed",
+        details: formatZodError(error),
+      },
+      {
+        status: 400,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+  } else if (error instanceof Error) {
+    return NextResponse.json(
+      {
+        error: "Internal server error",
+        details: error.message,
+      },
+      {
+        status: 500,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+  } else {
+    return NextResponse.json(
+      {
+        error: "Unknown error occurred",
+        details: String(error),
+      },
+      {
+        status: 500,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+  }
 }

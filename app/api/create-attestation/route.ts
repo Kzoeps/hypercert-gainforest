@@ -1,8 +1,7 @@
 import { SCHEMA_PAYLOAD, SCHEMA_UID } from "@/utils/attestation-constants";
-import { eas, encodeData, formatZodError } from "@/utils/attestation-utils";
+import { eas, encodeData, handleError } from "@/utils/attestation-utils";
 import { NO_EXPIRATION } from "@ethereum-attestation-service/eas-sdk";
 import { NextRequest, NextResponse } from "next/server";
-import { ZodError } from "zod";
 
 export async function POST(request: NextRequest) {
   try {
@@ -26,32 +25,6 @@ export async function POST(request: NextRequest) {
       transactionReceipt: transaction.receipt,
     });
   } catch (e) {
-    if (e instanceof ZodError) {
-      const zodErrors = formatZodError(e);
-      return NextResponse.json(
-        {
-          error: "Validation failed",
-          details: zodErrors,
-        },
-        {
-          status: 400,
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-    }
-    return NextResponse.json(
-      {
-        error: "Failed to create attestation",
-        details: e instanceof Error ? e.message : String(e),
-      },
-      {
-        status: 500,
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    return handleError(e);
   }
 }
