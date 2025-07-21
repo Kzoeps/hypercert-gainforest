@@ -26,4 +26,7 @@ export const SCHEMA_PAYLOAD = z.object({
     .number()
     .int({ message: "workEnd must be an integer" })
     .positive({ message: "workEnd must be positive" }),
+  recipient: z.string().refine((val) => ethers.isAddress(val), {
+    message: "Recipient must be a valid Ethereum address",
+  }),
 });

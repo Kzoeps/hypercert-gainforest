@@ -1,4 +1,5 @@
 import { EAS, SchemaEncoder } from "@ethereum-attestation-service/eas-sdk";
+import { ZodError } from "zod";
 import { ethers, hexlify } from "ethers";
 import crypto from "crypto";
 import { EAS_CONTRACT_ADDRESS } from "./attestation-constants";
@@ -31,3 +32,10 @@ const provider = new ethers.AlchemyProvider(
 );
 const signer = new ethers.Wallet(process.env.PRIVATE_KEY!, provider);
 eas.connect(signer);
+
+export function formatZodError(error: ZodError) {
+  return error.issues.map((err) => ({
+    path: err.path.join("."),
+    message: err.message,
+  }));
+}
