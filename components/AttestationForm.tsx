@@ -179,7 +179,11 @@ export function AttestationForm() {
         <button
           type="button"
           onClick={autoFill}
-          className="flex-1 bg-gray-200 text-black py-2 rounded hover:bg-gray-300"
+          disabled={isSubmitting}
+          className={
+            "flex-1 bg-gray-200 text-black py-2 rounded hover:bg-gray-300 disabled:opacity-50 disabled:hover:bg-gray-200" +
+            (isSubmitting ? " hover:cursor-not-allowed" : "")
+          }
         >
           AutoFill
         </button>
