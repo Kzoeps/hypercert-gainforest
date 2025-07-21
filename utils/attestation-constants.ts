@@ -12,9 +12,11 @@ export const EAS_SCHEMA_PAYLOAD = z
     }),
     title: z
       .string()
+      .trim()
       .min(5, { message: "Title must be greater than 5 characters" }),
     description: z
       .string()
+      .trim()
       .min(10, { message: "Description must be greater than 10 characters" }),
     contributors: z
       .array(z.string())
@@ -22,6 +24,8 @@ export const EAS_SCHEMA_PAYLOAD = z
       .refine((addresses) => addresses.every((val) => ethers.isAddress(val)), {
         message: "All contributors must be valid Ethereum addresses",
       }),
+    // potentially make this a date instead of unix timestamp for api consumption for easier dx?
+    // and then convert to unix from api? but unsure if this was required or not.
     workStart: z
       .number()
       .int({ message: "workStart must be an integer" })
@@ -30,9 +34,12 @@ export const EAS_SCHEMA_PAYLOAD = z
       .number()
       .int({ message: "workEnd must be an integer" })
       .positive({ message: "workEnd must be positive" }),
-    recipient: z.string().refine((val) => ethers.isAddress(val), {
-      message: "Recipient must be a valid Ethereum address",
-    }),
+    recipient: z
+      .string()
+      .trim()
+      .refine((val) => ethers.isAddress(val), {
+        message: "Recipient must be a valid Ethereum address",
+      }),
   })
   .refine((data) => data.workEnd > data.workStart, {
     message: "Work end must be greater than work start",
