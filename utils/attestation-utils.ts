@@ -2,16 +2,16 @@ import { EAS, SchemaEncoder } from "@ethereum-attestation-service/eas-sdk";
 import { ZodError } from "zod";
 import { ethers, hexlify } from "ethers";
 import crypto from "crypto";
-import { EAS_CONTRACT_ADDRESS } from "./attestation-constants";
+import {
+  AttestationPayload,
+  EAS_CONTRACT_ADDRESS,
+} from "./attestation-constants";
 import { NextResponse } from "next/server";
-import { de } from "zod/locales";
 
 const schemaEncoder = new SchemaEncoder(
   "bytes32 hypercertId, string title, string description, address[] contributors, uint64 workStart, uint64 workEnd"
 );
-// TODO: Add type for data parameter
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const encodeData = (data: any) => {
+export const encodeData = (data: Omit<AttestationPayload, "recipient">) => {
   const { title, description, contributors, workStart, workEnd } = data;
   const encodedData = schemaEncoder.encodeData([
     {

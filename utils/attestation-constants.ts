@@ -35,3 +35,5 @@ export const SCHEMA_PAYLOAD = z
     message: "Work end must be greater than work start",
     path: ["workEnd"],
   });
+
+export type AttestationPayload = z.infer<typeof SCHEMA_PAYLOAD>;
