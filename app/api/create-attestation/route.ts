@@ -27,7 +27,7 @@ const createSingleAttestation = async (data: AttestationPayload) => {
 
   return {
     message: "Attestation created successfully",
-    attestationId: newAttestationId,
+    attestationIds: [newAttestationId],
     transactionHash: transaction.receipt?.hash,
   };
 };
@@ -40,11 +40,11 @@ const createMultipleAttestations = async (dataArray: AttestationPayload[]) => {
     },
   ]);
 
-  const newAttestationId = await transaction.wait();
+  const newAttestationIds = await transaction.wait();
 
   return {
     message: "Multiple attestations created successfully",
-    attestationId: newAttestationId,
+    attestationIds: newAttestationIds,
     transactionHash: transaction.receipt?.hash,
   };
 };
