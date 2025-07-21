@@ -68,8 +68,12 @@ export function AttestationForm() {
         transactionHash: json.transactionHash ?? "",
       });
       reset();
-    } catch (e: any) {
-      setError(e?.message ?? "Something went wrong");
+    } catch (e: unknown) {
+      if (e instanceof Error) {
+        setError(e.message);
+      } else {
+        setError("Something went wrong");
+      }
     }
   };
 
