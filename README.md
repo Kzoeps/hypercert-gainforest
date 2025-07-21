@@ -2,8 +2,6 @@
 
 _Schema UID:_ 0x3a65facf06635b21432225452ac5a5c00bc300c91ff6f940dc7244836f892616
 
-**Notes**
-
 - `NEXT_PUBLIC_NETWORK` should be sepolia for the schema_uid above since it is deployed on sepolia
 - `PRIVATE_KEY` the wallet that is used to create the attestation.
 
