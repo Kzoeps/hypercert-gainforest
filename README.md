@@ -24,6 +24,7 @@ The payload must be an array of attestations.
 Each attestation can consists of these values:
 | Field | Type | Required | Description |
 | -------------- | ---------- | -------- | ---------------------------------------------------------- |
+| `hypercertId` | `string` | ✅ | Valid 32 bytes id with 0x prefix |
 | `title` | `string` | ✅ | Minimum 5 characters |
 | `description` | `string` | ✅ | Minimum 10 characters |
 | `contributors` | `string[]` | ✅ | Array of valid Ethereum addresses (at least one required) |
@@ -39,6 +40,7 @@ Single attestation
 ```
 [
     {
+        "hypercertId": "0x4f3edf983ac636a65a842ce7c78d9aa706d3b113bce0377cbeedb1a58e4c5f3c",
         "title": "Picking up trash",
         "description": "Go to every neighbourhood and pick up atleast one piece of trash",
         "contributors": ["0x1239021390", "0x1231231999"],
@@ -54,6 +56,7 @@ Multi attestations
 ```
 [
     {
+        "hypercertId": "0x4f3edf983ac636a65a842ce7c78d9aa706d3b113bce0377cbeedb1a58e4c5f3c",
         "title": "Picking up trash",
         "description": "Go to every neighbourhood and pick up atleast one piece of trash",
         "contributors": ["0x1239021390", "0x1231231999"],
@@ -62,6 +65,7 @@ Multi attestations
         "recipient": "0x21382031"
     },
     {
+        "hypercertId": "0xff3e21221ac636a65a842ce7c78d9aa706d3b113bce0377cbeedb1a58e4c5f3c",
         "title": "Going on a hike",
         "description": "Go on a hike and drink some pristine lakewater",
         "contributors": ["0x1239021390", "0x1231231999"],
@@ -98,6 +102,52 @@ Multi Attestation: same response just message says multi attestation created suc
 }
 ```
 
+# Test requests/responses
+
+_Request:_
+
+```
+curl --location 'http://localhost:3000/api/create-attestation' \
+--header 'Content-Type: application/json' \
+--data '[
+    {
+        "hypercertId": "0x4f3edf983ac636a65a842ce7c78d9aa706d3b113bce0377cbeedb1a58e4c5f3c",
+        "title": "Cut weed",
+        "description": "Gardening for good. all organic food",
+        "contributors": [
+            "0xbFbBFacCD1126A11b8F84C60b09859F80f3BD10F"
+        ],
+        "workStart": 1747792145,
+        "workEnd": 1750470545,
+        "recipient": "0xbFbBFacCD1126A11b8F84C60b09859F80f3BD10F"
+    },
+    {
+        "hypercertId": "0x4f3edf983ac63dda21912ce7c78d9aa706d3b113bce0377cbeedb1a58e4c5f3c",
+        "title": "Community food",
+        "description": "Tomza for everyone at the event hall",
+        "contributors": [
+            "0x868daB0b8E21EC0a48b726A1ccf25826c78C6d7F"
+        ],
+        "workStart": 1745048719,
+        "workEnd": 1746667919,
+        "recipient": "0x868daB0b8E21EC0a48b726A1ccf25826c78C6d7F"
+    }
+]'
+```
+
+_Response_
+
+```
+{
+  "message": "Multiple attestations created successfully",
+  "attestationIds": [
+    "0x08eb5c7e08cbd696aa1e68613acaa9957c40b348ca8f2e5bc6b90bb031e26fcd",
+    "0xebe77e6464461d63ec4287df0f8d2ed980736bf0e8accd997d30b4a9f676e866"
+  ],
+  "transactionHash": "0xba434010dd936b1c9f10f43ea6f51fcde79a39fe2d76a5923edcb1926426aa96"
+}
+```
+
 # Setup
 
 1. We use `pnpm` in this project so run the following command to install all dependencies:
@@ -124,5 +174,5 @@ used private key from `process.env.PK` dont know how these are handled in produc
 - [x] multi attestations
 - [x] error handling
 - [ ] change workstart and workend to proper dates
-- [ ] add hypercert id to payload
-- [ ] add some sample requests using curl and sample responses
+- [x] add hypercert id to payload
+- [x] add some sample requests using curl and sample responses
