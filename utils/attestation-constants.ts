@@ -7,6 +7,9 @@ export const SCHEMA_UID =
   "0x3a65facf06635b21432225452ac5a5c00bc300c91ff6f940dc7244836f892616";
 export const EAS_SCHEMA_PAYLOAD = z
   .object({
+    hypercertId: z.string().refine((val) => ethers.isHexString(val, 32), {
+      message: "Not a valid byte32 for hypercert ID",
+    }),
     title: z
       .string()
       .min(5, { message: "Title must be greater than 5 characters" }),
