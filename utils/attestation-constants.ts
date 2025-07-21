@@ -5,7 +5,7 @@ export const EAS_CONTRACT_ADDRESS =
   "0xC2679fBD37d54388Ce493F1DB75320D236e1815e"; // Sepolia v0.26
 export const SCHEMA_UID =
   "0x3a65facf06635b21432225452ac5a5c00bc300c91ff6f940dc7244836f892616";
-export const SCHEMA_PAYLOAD = z
+export const EAS_SCHEMA_PAYLOAD = z
   .object({
     title: z
       .string()
@@ -36,4 +36,8 @@ export const SCHEMA_PAYLOAD = z
     path: ["workEnd"],
   });
 
-export type AttestationPayload = z.infer<typeof SCHEMA_PAYLOAD>;
+export const EAS_SCHEMA_PAYLOAD_MULTI = z.array(EAS_SCHEMA_PAYLOAD).nonempty({
+  message: "At least one attestation is required",
+});
+
+export type AttestationPayload = z.infer<typeof EAS_SCHEMA_PAYLOAD>;
