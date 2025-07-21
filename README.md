@@ -114,12 +114,15 @@ PRIVATE_KEY="YOUR_WALLET_PRIVATE_KEY"
 ALCHEMY_API_KEY="ALCHEMY_KEY"
 ```
 
+## Notes:
+
+used private key from `process.env.PK` dont know how these are handled in production.
+
 ## TODOS
 
 - [x] add schema validation
 - [x] multi attestations
 - [x] error handling
-
-## Notes:
-
-used private key from `process.env.PK` dont know how these are handled in production.
+- [ ] change workstart and workend to proper dates
+- [ ] add hypercert id to payload
+- [ ] add some sample requests using curl and sample responses
