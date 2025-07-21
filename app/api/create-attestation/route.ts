@@ -22,7 +22,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({
       message: "Attestation created successfully",
       attestationId: newAttestationId,
-      transactionReceipt: transaction.receipt,
+      transactionHash: transaction.receipt?.hash,
     });
   } catch (e) {
     return handleError(e);
