@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 
 export interface AttestationFormInputs {
   hypercertId: string;
@@ -21,7 +22,11 @@ export function AttestationForm() {
     reset,
   } = useForm<AttestationFormInputs>();
 
-  const [response, setResponse] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [result, setResult] = useState<{
+    attestationIds: string[];
+    transactionHash: string;
+  } | null>(null);
 
   const autoFill = () => {
     reset({
@@ -37,7 +42,8 @@ export function AttestationForm() {
   };
 
   const onSubmit = async (data: AttestationFormInputs) => {
-    setResponse(null);
+    setError(null);
+    setResult(null);
 
     const payload = [
       {
@@ -57,11 +63,19 @@ export function AttestationForm() {
       });
 
       const json = await res.json();
-      setResponse(JSON.stringify(json, null, 2));
+      setResult({
+        attestationIds: json.attestationIds ?? [],
+        transactionHash: json.transactionHash ?? "",
+      });
       reset();
     } catch (e: any) {
-      setResponse(e?.message ?? "Something went wrong");
+      setError(e?.message ?? "Something went wrong");
     }
+  };
+
+  const copyToClipboard = async (text: string) => {
+    await navigator.clipboard.writeText(text);
+    toast("Copied to clipboard");
   };
 
   // Tailwind helper class for inputs
@@ -181,10 +195,41 @@ export function AttestationForm() {
         </button>
       </div>
 
-      {response && (
-        <pre className="mt-4 text-xs whitespace-pre-wrap break-all max-h-64 overflow-auto border p-2 rounded bg-gray-50">
-          {response}
-        </pre>
+      {result && (
+        <div className="mt-4 space-y-2">
+          <span className="text-sm mb-2">Transaction Hash:</span>
+          <div className="flex items-center gap-2">
+            <span className="font-mono text-xs break-all flex-1">
+              {result.transactionHash}
+            </span>
+            <button
+              type="button"
+              onClick={() => copyToClipboard(result.transactionHash)}
+              className="text-xs bg-gray-200 px-2 py-1 rounded hover:bg-gray-300"
+            >
+              Copy
+            </button>
+          </div>
+          <div className="flex flex-col gap-y-2">
+            <span className="text-sm mb-2">Attestation IDs:</span>
+            {result.attestationIds.map((id, idx) => (
+              <div key={idx} className="flex items-center gap-2">
+                <span className="font-mono text-xs break-all flex-1">{id}</span>
+                <button
+                  type="button"
+                  onClick={() => copyToClipboard(id)}
+                  className="text-xs bg-gray-200 px-2 py-1 rounded hover:bg-gray-300"
+                >
+                  Copy
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {error && (
+        <p className="mt-4 text-sm text-red-600 whitespace-pre-wrap">{error}</p>
       )}
     </form>
   );

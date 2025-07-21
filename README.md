@@ -104,6 +104,8 @@ Multi Attestation: same response just message says multi attestation created suc
 
 # Test requests/responses
 
+**Note: You can also test through the UI by running pnpm dev and then going to the root page: `/`**
+
 _Request:_
 
 ```
